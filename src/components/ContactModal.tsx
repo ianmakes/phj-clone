@@ -83,7 +83,11 @@ const ContactModal = ({ isOpen, onClose, type = 'consultation' }: ContactModalPr
     setIsSubmitting(true);
     
     try {
-      await sendFormEmail(formData, 'contact');
+      const submissionData = {
+        ...formData,
+        date: new Date().toLocaleString()
+      };
+      await sendFormEmail(submissionData, 'contact');
       toast.success('Thank you! Our care team will contact you within 24 hours.');
       
       // Reset form
@@ -147,17 +151,6 @@ const ContactModal = ({ isOpen, onClose, type = 'consultation' }: ContactModalPr
           <input type="hidden" name="form-name" value="contact" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             <div className="space-y-2">
-              <Label htmlFor="date" className="text-sm md:text-base font-semibold text-healthcare-green">Date *</Label>
-              <Input
-                id="date"
-                type="date"
-                value={formData.date}
-                onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
-                className="h-10 md:h-11 border-healthcare-green/20 focus:border-healthcare-gold"
-                required
-              />
-            </div>
-            <div className="space-y-2">
               <Label htmlFor="clientFullName" className="text-sm md:text-base font-semibold text-healthcare-green">Client's Full Name *</Label>
               <Input
                 id="clientFullName"
@@ -178,8 +171,6 @@ const ContactModal = ({ isOpen, onClose, type = 'consultation' }: ContactModalPr
                 className="h-10 md:h-11 border-healthcare-green/20 focus:border-healthcare-gold"
               />
             </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             <div className="space-y-2">
               <Label htmlFor="clientAge" className="text-sm md:text-base font-semibold text-healthcare-green">Age</Label>
               <Input
@@ -190,6 +181,8 @@ const ContactModal = ({ isOpen, onClose, type = 'consultation' }: ContactModalPr
                 placeholder="Calculated"
               />
             </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             <div className="space-y-2">
               <Label htmlFor="phone" className="text-sm md:text-base font-semibold text-healthcare-green">Phone Number *</Label>
               <Input
@@ -226,7 +219,6 @@ const ContactModal = ({ isOpen, onClose, type = 'consultation' }: ContactModalPr
                 </SelectContent>
               </Select>
             </div>
-          </div>
             <div className="space-y-2">
               <Label htmlFor="city" className="text-sm md:text-base font-semibold text-healthcare-green">City</Label>
               <Input
@@ -236,6 +228,7 @@ const ContactModal = ({ isOpen, onClose, type = 'consultation' }: ContactModalPr
                 className="h-10 md:h-11 border-healthcare-green/20 focus:border-healthcare-gold"
               />
             </div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 pt-2">
             <div className="space-y-2">
